@@ -9,7 +9,7 @@ public class StandardName extends Name{
 
 
     @Override
-    public String fullname(){
+    public String fullName(){
         return last+", "+first;
     }
 
