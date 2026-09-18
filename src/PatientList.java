@@ -7,7 +7,7 @@ public class PatientList {
         patientArray=new Patient[maxPatients];
     }
     public boolean add(Patient pat){
-
+        return addOrdered(pat);
     }
     private boolean addOrdered(Patient pat){
         if (nextIndex>=patientArray.length){return false;}
@@ -22,7 +22,7 @@ public class PatientList {
     }
 
     public Patient find(PatientIdentity ID){
-        return binarySearch(id);
+        return binarySearch(ID);
 
     }
     private Patient binarySearch(PatientIdentity ID){
@@ -41,7 +41,25 @@ public class PatientList {
             else{
                 upper=mid-1;
             }
-            return null;
+        }
+        return null;
+    }
+
+    public class Iterator{
+        private int index;
+        public Iterator(){
+            index=0;
+        }
+        public Patient next(){
+            if(index>=nextIndex){
+                return null;
+            }
+            Patient result=patientArray[index];
+            index++;
+            return result;
         }
     }
+
+
+
 }
