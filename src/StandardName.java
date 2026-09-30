@@ -19,4 +19,8 @@ public class StandardName extends Name{
     protected String sortKey(){
         return last.toLowerCase()+","+first.toLowerCase();
     }
+    @Override
+    public String getFirst(){return first;}
+    @Override
+    public String getLast(){return last;}
 }

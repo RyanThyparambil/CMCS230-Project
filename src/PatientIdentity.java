@@ -20,4 +20,6 @@ public class PatientIdentity {
     }
     @Override
     public String toString(){return name.toString()+", "+DOB.toString();}
+    public Name getName(){return name;}
+    public Date getDateofBirth(){return DOB;}
 }

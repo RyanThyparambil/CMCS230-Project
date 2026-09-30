@@ -1,3 +1,6 @@
+import java.io.File;
+import java.io.FileWriter;
+
 public class PatientList {
     private Patient[] patientArray;
     private final int maxPatients=1000;
@@ -63,6 +66,16 @@ public class PatientList {
                 return null;
             }
             return patientArray[index];
+
+        }
+        public boolean saveToFile(String filename){
+            boolean r=true;
+            File file=new File(filename);
+            FileWriter writer=null;
+            try{
+                writer=new FileWriter(file);
+                Iterator
+            }
 
         }
 
