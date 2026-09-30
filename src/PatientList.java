@@ -51,13 +51,21 @@ public class PatientList {
             index=0;
         }
         public Patient next(){
-            if(index>=nextIndex){
+            if((index >= nextIndex) || (patientArray[index] == null)){
                 return null;
             }
             Patient result=patientArray[index];
             index++;
             return result;
         }
+        public Patient peek(){
+            if(index>=nextIndex){
+                return null;
+            }
+            return patientArray[index];
+
+        }
+
     }
 
 

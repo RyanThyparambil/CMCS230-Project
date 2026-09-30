@@ -101,4 +101,36 @@ public class PatientListTest {
         Patient overflow=new Patient(new PatientIdentity(new StandardName("Extra", "Patient"),new Date(0)));
         assertFalse(list.add(overflow));
     }
+    @Test
+    public void testPeekAfterExhaustingIteratorReturnsNull(){
+        PatientList list=new PatientList();
+        Patient pA= new Patient(new PatientIdentity(new StandardName("Alice", "Adams"),new Date(0)));
+        list.add(pA);
+        PatientList.Iterator iter=list.new Iterator();
+        iter.next();
+        assertNull(iter.peek());
+    }
+
+    @Test
+    public void testPeekDoesNotAdvance(){
+        PatientList list=new PatientList();
+        Patient pA= new Patient(new PatientIdentity(new StandardName("Alice", "Adams"), new Date(0)));
+        Patient pB=new Patient(new PatientIdentity(new StandardName("Bob", "Baker"),new Date(0)));
+        list.add(pA);
+        list.add(pB);
+        PatientList.Iterator iter=list.new Iterator();
+        assertSame(pA,iter.peek());
+        assertSame(pA,iter.peek());
+        assertSame(pA,iter.next());
+        assertSame(pB,iter.peek());
+    }
+
+    @Test
+    public void testPeekOnEmptyListReturnsNull(){
+        PatientList list=new PatientList();
+        PatientList.Iterator iter=list.new Iterator();
+        assertNull(iter.peek());
+    }
+
+
 }
