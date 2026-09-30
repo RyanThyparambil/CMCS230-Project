@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 
 public class PatientList {
     private Patient[] patientArray;
@@ -74,8 +75,18 @@ public class PatientList {
             FileWriter writer=null;
             try{
                 writer=new FileWriter(file);
-                Iterator
+                Iterator iter =new Iterator();
+                while ((iter.peek()!=null)){
+                    Patient pat=iter.next();
+                    writer.write(pat.toCSV()+"\n");
+                }
+                writer.close();
             }
+            catch (IOException e){
+                e.printStackTrace();
+                r=false;
+            }
+            return r;
 
         }
 
