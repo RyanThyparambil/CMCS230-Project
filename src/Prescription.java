@@ -1,4 +1,3 @@
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Prescription {
@@ -20,15 +19,16 @@ public class Prescription {
     public static Prescription makePres(String line){
         try{
             String[] parts=line.split(",");
-            if(parts.length!=6){
+            if(parts.length!=7){
                 return null;
             }
-            String medicine=parts[2].trim();
-            SimpleDateFormat dateFormat=new SimpleDateFormat("MM-dd-yyyy");
-            dateFormat.setLenient(false);
-            Date issued=dateFormat.parse(parts[3].trim());
-            int dose=Integer.parseInt(parts[4].trim());
-            String prescriber=parts[5].trim();
+            String medicine=parts[3].trim();
+            Date issued=CSVReader.parseDate(parts[4].trim());
+            int dose=Integer.parseInt(parts[5].trim());
+            String prescriber=parts[6].trim();
+            if(medicine.length()==0||prescriber.length()==0||issued==null){
+                return null;
+            }
             return new Prescription(medicine,issued,dose,prescriber);
         }
         catch(Exception e){

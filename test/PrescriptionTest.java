@@ -1,56 +1,57 @@
 import org.junit.jupiter.api.Test;
 import java.util.Date;
-import java.text.SimpleDateFormat;
-import java.text.ParseException;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class PrescriptionTest {
 
     @Test
-    public void testConstructorAndGetters() throws ParseException{
-        SimpleDateFormat df=new SimpleDateFormat("MM-dd-yyyy");
-        Date d=df.parse("02-03-2026");
-        Prescription p=new Prescription("Amoxicillin",d,500,"Dr. Lee");
-        assertEquals("Amoxicillin",p.getName());
+    public void testConstructorAndGetters(){
+        Date d=CSVReader.parseDate("2023-02-11");
+        Prescription p=new Prescription("heptapone",d,50,"Agrawal");
+        assertEquals("heptapone",p.getName());
         assertEquals(d,p.getDateOfIssue());
-        assertEquals(500,p.getDosage());
-        assertEquals("Dr. Lee",p.getPrescriber());
+        assertEquals(50,p.getDosage());
+        assertEquals("Agrawal",p.getPrescriber());
     }
 
     @Test
-    public void testMakePresValidLine() throws ParseException{
-        SimpleDateFormat df=new SimpleDateFormat("MM-dd-yyyy");
-        Prescription p=Prescription.makePres("Alice Adams, 01-01-1990, Amoxicillin, 02-03-2026, 500, Dr. Lee");
+    public void testMakePresValidLine(){
+        Prescription p=Prescription.makePres("Smith,Maria,1953-06-16,heptapone,2023-02-11,50,Agrawal");
         assertNotNull(p);
-        assertEquals("Amoxicillin",p.getName());
-        assertEquals(df.parse("02-03-2026"),p.getDateOfIssue());
-        assertEquals(500,p.getDosage());
-        assertEquals("Dr. Lee",p.getPrescriber());
+        assertEquals("heptapone",p.getName());
+        assertEquals(CSVReader.parseDate("2023-02-11"),p.getDateOfIssue());
+        assertEquals(50,p.getDosage());
+        assertEquals("Agrawal",p.getPrescriber());
     }
 
     @Test
     public void testMakePresTooFewFieldsReturnsNull(){
-        assertNull(Prescription.makePres("Alice Adams, 01-01-1990, Amoxicillin"));
+        assertNull(Prescription.makePres("Smith,Maria,1953-06-16,heptapone"));
     }
 
     @Test
     public void testMakePresTooManyFieldsReturnsNull(){
-        assertNull(Prescription.makePres("Alice Adams, 01-01-1990, Amoxicillin, 02-03-2026, 500, Dr. Lee, extra"));
+        assertNull(Prescription.makePres("Smith,Maria,1953-06-16,heptapone,2023-02-11,50,Agrawal,extra"));
     }
 
     @Test
     public void testMakePresBadDateReturnsNull(){
-        assertNull(Prescription.makePres("Alice Adams, 01-01-1990, Amoxicillin, notadate, 500, Dr. Lee"));
+        assertNull(Prescription.makePres("Smith,Maria,1953-06-16,heptapone,notadate,50,Agrawal"));
+    }
+
+    @Test
+    public void testMakePresWrongDateFormatReturnsNull(){
+        assertNull(Prescription.makePres("Smith,Maria,1953-06-16,heptapone,02-11-2023,50,Agrawal"));
     }
 
     @Test
     public void testMakePresImpossibleDateReturnsNull(){
-        assertNull(Prescription.makePres("Alice Adams, 01-01-1990, Amoxicillin, 13-45-2026, 500, Dr. Lee"));
+        assertNull(Prescription.makePres("Smith,Maria,1953-06-16,heptapone,2023-13-45,50,Agrawal"));
     }
 
     @Test
     public void testMakePresNonNumericDosageReturnsNull(){
-        assertNull(Prescription.makePres("Alice Adams, 01-01-1990, Amoxicillin, 02-03-2026, lots, Dr. Lee"));
+        assertNull(Prescription.makePres("Smith,Maria,1953-06-16,heptapone,2023-02-11,lots,Agrawal"));
     }
 
     @Test

@@ -1,6 +1,4 @@
 import java.io.*;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class PatientList {
     private Patient[] patientArray;
@@ -92,7 +90,7 @@ public class PatientList {
 
     }
 
-    public boolean importFile(String filename){
+    public boolean importFromFile(String filename){
         boolean r=true;
         Patient[] b=new Patient[maxPatients];
         int bCount=0;
@@ -101,7 +99,7 @@ public class PatientList {
             reader = new BufferedReader(new FileReader(new File(filename)));
             String line;
             while ((line = reader.readLine()) != null) {
-                Patient pat = parseLine(line);
+                Patient pat = Patient.makePatient(line);
                 if (pat != null && bCount < b.length) {
                     b[bCount] = pat;
                     bCount++;
@@ -118,20 +116,12 @@ public class PatientList {
         }
         return r;
     }
-    private Patient parseLine(String l){
-        try{
-            String[] parts=l.split(",");
-            if(parts.length!=3){return null;}
-            String last=parts[0].trim();
-            String first=parts[1].trim();
-            SimpleDateFormat dateFormat=new SimpleDateFormat("MM-dd-yyyy");
-            Date dob=dateFormat.parse(parts[2].trim());
-            Name name=new StandardName(first,last);
-            return new Patient(new PatientIdentity(name,dob));
-        }catch (Exception e){
-            return null;
-        }
+
+    public boolean importPrescriptionsFromFile(String filename){
+        PrescriptionReader reader=new PrescriptionReader(this);
+        return reader.read(filename);
     }
+
     private void mergeSort(Patient[] arr,int left, int right){
         if(left<right){
             int mid=(left+right)/2;
